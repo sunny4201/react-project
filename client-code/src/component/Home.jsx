@@ -1,17 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify'
+import { handleSuccess } from './Utils';
+
 
 const Home = () => {
-  const [user, ] = useState({
-    name: 'John Doe',
+  const [loggedInUsername, setLoggedInUsername] = useState(' ');
+  useEffect(()=>{
+    setLoggedInUsername(localStorage.getItem('loggedInUsername'));
+  }, [])
+  const [user,] = useState({
     email: 'john.doe@example.com',
     role: 'User',
     address: '1234 Elm Street, Springfield',
     phone: '(123) 456-7890',
     avatar: 'https://www.w3schools.com/w3images/avatar2.png', // Example avatar URL
   });
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     // Handle logout functionality here, such as clearing session or token
+    handleSuccess("User Logout Successfully");
+    localStorage.removeItem('token');
+    localStorage.removeItem('loggedInUsername');
+    localStorage.removeItem('loggedInEmail');
+    setTimeout(() => {
+      navigate('/signin');
+    }, 2.5 * 1000);
     console.log('User logged out');
   };
 
@@ -21,7 +36,7 @@ const Home = () => {
       <div className="flex justify-between items-center p-6 bg-gradient-to-r from-gray-700 to-gray-800 text-white shadow-md">
         <div className="text-xl font-semibold">User Dashboard</div>
         <div className="flex items-center space-x-4">
-          <span className="text-lg">{user.name}</span>
+          <span className="text-lg">{loggedInUsername}</span>
           <div className="relative">
             <img
               src={user.avatar}
@@ -37,7 +52,7 @@ const Home = () => {
           </button>
         </div>
       </div>
-
+      <ToastContainer />
       {/* User Profile Section */}
       <div className="max-w-4xl mx-auto p-6 bg-gray-200 mt-8 rounded-xl shadow-lg">
         <div className="flex items-center space-x-6">
@@ -47,7 +62,7 @@ const Home = () => {
             className="w-24 h-24 rounded-full border-4 border-gray-600"
           />
           <div>
-            <h1 className="text-3xl font-semibold text-gray-900">{user.name}</h1>
+            <h1 className="text-3xl font-semibold text-gray-900">{loggedInUsername}</h1>
             <p className="text-lg text-gray-700">{user.role}</p>
             <p className="text-gray-600">{user.email}</p>
           </div>

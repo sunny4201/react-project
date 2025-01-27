@@ -59,20 +59,20 @@ const Signup = () => {
     }
 
     try {
-      const url = process.env.Register_URL;
+      const url = "https://fictional-eureka-6wppvg4xwqxfxq74-4000.app.github.dev/api/auth/register";
       const response = await fetch(url, {
         method : "POST",
         headers:{
           'Content-Type' : 'application/json'
         },
         body:JSON.stringify(signupInfo)
-      })
+      });
       const result = await response.json();
       const {message, success, error} = result
       if(success){
         handleSuccess(message);
         setTimeout(() => {
-          navigate('/home');
+          navigate('/signin');
         }, 1000);
       }
       else if(error){
@@ -82,17 +82,14 @@ const Signup = () => {
       else if(!success){
         handleError(message);
       }
-      // console.log(result)
+      console.log(result)
+      console.log(signupInfo)
       
     } catch (error) {
       handleError(error);
       
     }
 
-
-    // Proceed with form submission if validation passes
-    // console.log('Form Data Submitted:', signupInfo);
-    // You can proceed with API call or other logic here.
   };
 
   return (

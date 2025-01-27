@@ -5,6 +5,7 @@ dotenv.config();
 const dbconnect = require('./config/connectToDB')
 const authRoutes = require("./routes/authRouters")
 const userRoutes = require("./routes/userRoutes")
+const productRouter = require("./routes/productRouter");
 dbconnect(); 
 
 const app = express()
@@ -18,6 +19,7 @@ app.use(cors());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use('/products', productRouter);
 
 app.listen(port, ()=>{
     console.log(`server is up and running on ${port}`)

@@ -39,7 +39,7 @@ const Signin = () => {
       return;
     }
     try {
-      const url = process.env.Login_URL;
+      const url = "https://fictional-eureka-6wppvg4xwqxfxq74-4000.app.github.dev/api/auth/login";
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -66,18 +66,12 @@ const Signin = () => {
       else if (!success) {
         handleError(message);
       }
-      // console.log(result)
+      console.log(result)
 
     } catch (error) {
       handleError(error);
 
     }
-
-
-
-    // Proceed with form submission if validation passes
-    // console.log('Form Data Submitted:', signinInfo);
-    // You can proceed with API call or other logic here.
   };
 
   return (

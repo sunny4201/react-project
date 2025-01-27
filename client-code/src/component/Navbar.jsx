@@ -1,34 +1,69 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // If you are using React Router for navigation
+import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   return (
-    <div className="bg-teal-600 text-white py-4">
-      <div className="max-w-screen-xl mx-auto px-4 flex justify-between items-center">
-        {/* Left side (Home) */}
-        <div className="text-xl font-semibold">
-          <Link to="/" className="hover:text-teal-200">
+    <nav className="bg-gray-800 text-white p-4 shadow-md">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        {/* Left side: Navigation Links */}
+        <div className="flex space-x-6">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive
+                ? 'text-gray-300 hover:text-gray-500'
+                : 'text-gray-400 hover:text-gray-300'
+            }
+          >
             Home
-          </Link>
+          </NavLink>
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              isActive
+                ? 'text-gray-300 hover:text-gray-500'
+                : 'text-gray-400 hover:text-gray-300'
+            }
+          >
+            About
+          </NavLink>
+          <NavLink
+            to="/contact"
+            className={({ isActive }) =>
+              isActive
+                ? 'text-gray-300 hover:text-gray-500'
+                : 'text-gray-400 hover:text-gray-300'
+            }
+          >
+            Contact
+          </NavLink>
         </div>
 
-        {/* Right side (Sign In / Sign Up) */}
-        <div className="space-x-6">
-          <Link
-            to="/signin"
-            className="px-4 py-2 text-lg rounded-md hover:bg-teal-500 hover:text-white transition duration-200"
-          >
-            Sign In
-          </Link>
-          <Link
+        {/* Right side: Authentication Links */}
+        <div className="flex space-x-6">
+          <NavLink
             to="/signup"
-            className="px-4 py-2 text-lg rounded-md hover:bg-teal-500 hover:text-white transition duration-200"
+            className={({ isActive }) =>
+              isActive
+                ? 'text-gray-300 hover:text-gray-500'
+                : 'text-gray-400 hover:text-gray-300'
+            }
           >
             Sign Up
-          </Link>
+          </NavLink>
+          <NavLink
+            to="/signin"
+            className={({ isActive }) =>
+              isActive
+                ? 'text-gray-300 hover:text-gray-500'
+                : 'text-gray-400 hover:text-gray-300'
+            }
+          >
+            Sign In
+          </NavLink>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

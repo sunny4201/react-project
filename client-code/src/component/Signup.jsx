@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 import {ToastContainer} from 'react-toastify'
+import {Link} from 'react-router-dom'
 import { handleError, handleSuccess } from './Utils';
+import {useNavigate} from 'react-router-dom';
 
 const Signup = () => {
-  const [formData, setFormData] = useState({
+  const [signupInfo, setSignupInfo] = useState({
     username: '',
     email: '',
     password: '',
     role: '',
   });
 
-  // const [signupInfo, setSignupInfo] = useState({
-  //   name: "",
-  //   email: "",
-  //   password: "",
-  //   role: ""
-  // })
+
+  const navigate = useNavigate();
   
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -27,7 +25,7 @@ const Signup = () => {
     if (name === 'confirmPassword') {
       setConfirmPassword(value); // Handle confirm password separately
     } else {
-      setFormData((prev) => ({
+      setSignupInfo((prev) => ({
         ...prev,
         [name]: value,
       }));
@@ -42,33 +40,58 @@ const Signup = () => {
     e.preventDefault();
 
     // Validate password and confirm password match
-    if (formData.password !== confirmPassword) {
+    if (signupInfo.password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-    const {username, email, password, role} = formData;
-    if(!username ||  ! email || !password || !role) {
-      return handleError('All field are required.');
+    const {username, email, password, role} = signupInfo;
+    if(!username) {
+      return handleError('Username is required.');
     }
+    else if(! email){
+      return handleError('Email is required.');
+    }
+    else if(!password){
+      return handleError('Password is required.');
+    }
+    else if(!role){
+      return handleError('Role is required.');
+    }
+
     try {
-      const url = "https://fictional-eureka-6wppvg4xwqxfxq74-4000.app.github.dev/api/auth/register";
+      const url = process.env.Register_URL;
       const response = await fetch(url, {
         method : "POST",
         headers:{
           'Content-Type' : 'application/json'
         },
-        body: JSON.stringify(formData)
+        body:JSON.stringify(signupInfo)
       })
-      const result = await response.JSON();
-      console.log(result)
+      const result = await response.json();
+      const {message, success, error} = result
+      if(success){
+        handleSuccess(message);
+        setTimeout(() => {
+          navigate('/home');
+        }, 1000);
+      }
+      else if(error){
+        const details = error?.details[0].message;
+        handleError(details);
+      }
+      else if(!success){
+        handleError(message);
+      }
+      // console.log(result)
       
     } catch (error) {
+      handleError(error);
       
     }
 
 
     // Proceed with form submission if validation passes
-    console.log('Form Data Submitted:', formData);
+    // console.log('Form Data Submitted:', signupInfo);
     // You can proceed with API call or other logic here.
   };
 
@@ -84,11 +107,11 @@ const Signup = () => {
               type="text"
               id="username"
               name="username"
-              value={formData.username}
+              value={signupInfo.username}
               onChange={handleChange}
               placeholder="Enter a valid username"
               className="mt-2 w-full px-4 py-3 border border-gray-500 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-600 transition-transform duration-300 ease-in-out bg-gray-900 text-white"
-              required
+              // required
             />
           </div>
 
@@ -99,11 +122,11 @@ const Signup = () => {
               type="email"
               id="email"
               name="email"
-              value={formData.email}
+              value={signupInfo.email}
               onChange={handleChange}
               placeholder="Enter a valid email"
               className="mt-2 w-full px-4 py-3 border border-gray-500 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-600 transition-transform duration-300 ease-in-out bg-gray-900 text-white"
-              required
+              // required
             />
           </div>
 
@@ -114,11 +137,11 @@ const Signup = () => {
               type="password"
               id="password"
               name="password"
-              value={formData.password}
+              value={signupInfo.password}
               onChange={handleChange}
               placeholder="Enter a strong password"
               className="mt-2 w-full px-4 py-3 border border-gray-500 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-600 transition-transform duration-300 ease-in-out bg-gray-900 text-white"
-              required
+              // required
             />
           </div>
 
@@ -133,7 +156,7 @@ const Signup = () => {
               onChange={handleChange}
               placeholder="Re-enter your password"
               className="mt-2 w-full px-4 py-3 border border-gray-500 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-600 transition-transform duration-300 ease-in-out bg-gray-900 text-white"
-              required
+              // required
             />
           </div>
 
@@ -146,10 +169,10 @@ const Signup = () => {
             <select
               id="role"
               name="role"
-              value={formData.role}
+              value={signupInfo.role}
               onChange={handleChange}
               className="mt-2 w-full px-4 py-3 border border-gray-500 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-600 transition-transform duration-300 ease-in-out bg-gray-900 text-white"
-              required
+              // required
             >
               <option value="">Select Role</option>
               <option value="admin">Admin</option>
@@ -169,8 +192,8 @@ const Signup = () => {
           {/* Sign In Link */}
           <div className="text-center mt-4">
             <span className="text-sm text-gray-400">
-              Already have an account?{' '}
-              {/* <a href="#" className="text-teal-500 hover:underline">Sign In</a> */}
+              Already have an account?
+              <Link to="/signin" className="text-teal-500 hover:underline">Sign in</Link>
             </span>
           </div>
         </form>

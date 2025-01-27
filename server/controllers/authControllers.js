@@ -10,7 +10,7 @@ const register = async (req, res) =>{
         await newUser.save();
         res.status(201).json({message: `User is registered with username : ${username}.`, success : true});
     } catch (error) {
-        res.status(500).json({message: `something went wront..`});
+        res.status(500).json({message: `something went wront..`, success : false});
     }
 }
 
@@ -20,11 +20,11 @@ const login = async (req, res) =>{
         const user = await User.findOne({username})
         console.log(user)
         if(!user){
-            res.status(404).json({message: `User with ${username} not found.`});
+            res.status(404).json({message: `User with ${username} not found.`, success : false});
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if(!isMatch){
-            return res.status(400).json({message : "Invalid credential"});
+            return res.status(400).json({message : "Invalid credential", success : false});
         }
         const token = jwt.sign(
             {id:user._id, email : user.email, role:user.role},
@@ -40,7 +40,7 @@ const login = async (req, res) =>{
         });
     } 
     catch (error) {
-        res.status(500).json({message: `something went wront..`});
+        res.status(500).json({message: `something went wront..`, success : false});
 
     }
 }

@@ -4,6 +4,7 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import Signup from './component/Signup';
 import Signin from './component/Signin';
 import Navbar from './component/Navbar';
+// import { useState } from 'react';
 const router = createBrowserRouter([
   {
     path:"/",
@@ -39,7 +40,18 @@ const router = createBrowserRouter([
 ]);
 
 
+
 function App() {
+  
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const navigate = useNavigate();
+
+  
+  // const privateRoute= ({ element }) =>{
+  //   return isAuthenticated ? element : navigate("/home");
+  
+  // };
+
   return (  
     <>
     <RouterProvider router={router} />

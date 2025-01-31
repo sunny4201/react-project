@@ -6,7 +6,10 @@ import { handleSuccess } from './Utils';
 
 const Home = () => {
   const [loggedInUsername, setLoggedInUsername] = useState(' ');
-  useEffect(()=>{
+  const [product, setProduct] = useState([]);
+
+
+  useEffect(() => {
     setLoggedInUsername(localStorage.getItem('loggedInUsername'));
   }, [])
   const [user,] = useState({
@@ -27,8 +30,26 @@ const Home = () => {
     setTimeout(() => {
       navigate('/signin');
     }, 2.5 * 1000);
-    console.log('User logged out');
+    // console.log('User logged out');
   };
+
+  const fetchProduct = async () => {
+    const url = 'https://fictional-eureka-6wppvg4xwqxfxq74-4000.app.github.dev/products'
+    const headers = {
+      headers: {
+        'Authorization': localStorage.getItem('token')
+      }
+    }
+    const response = await fetch(url, headers);
+    const result = await response.json();
+    // setProduct(result);
+    setProduct(result);
+    // console.log(result);
+  };
+  useEffect(() => {
+    fetchProduct();
+  }, [])
+
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -55,6 +76,7 @@ const Home = () => {
       <ToastContainer />
       {/* User Profile Section */}
       <div className="max-w-4xl mx-auto p-6 bg-gray-200 mt-8 rounded-xl shadow-lg">
+
         <div className="flex items-center space-x-6">
           <img
             src={user.avatar}
@@ -85,6 +107,30 @@ const Home = () => {
             </div>
           </div>
         </div>
+
+
+      </div>
+      <div className="max-w-4xl mx-auto p-6 bg-gray-200 mt-8 rounded-xl shadow-lg">
+        {
+          <table className="min-w-full border-collapse border border-gray-300" >
+            <thead>
+              <tr>
+                <th className="border-b-2 border-gray-500 px-4 py-2 text-left" >Product Name</th>
+                <th className="border-b-2 border-gray-500 px-4 py-2 text-left "> Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {product.map((data, index) => (
+                <tr key={index}
+                  className={`${index % 2 === 0 ? 'bg-gray-400' : 'bg-gray-200'
+                    } hover:bg-gray-200`}>
+                  <td className="border-b border-gray-300 px-4 py-2">{data.name}</td>
+                  <td className="border-b border-gray-300 px-4 py-2">{data.price}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        }
       </div>
     </div>
   );

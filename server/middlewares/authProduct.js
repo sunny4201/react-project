@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const authProduct = (req, res, next) => {
 
     const token = req.headers.authorization || req.headers.Authorization;
-    console.log(token);
+    // console.log(token);
     if (!token) {
         return res.status(403).json({ message: "Unauthorized, JWT token is required." })
     }

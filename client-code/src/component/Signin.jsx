@@ -22,7 +22,7 @@ const Signin = () => {
     //   setError(''); // Clear error if user starts typing
     // }
   };
-  console.log(signinInfo);
+  // console.log(signinInfo);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,7 +66,7 @@ const Signin = () => {
       else if (!success) {
         handleError(message);
       }
-      console.log(result)
+      // console.log(result)
 
     } catch (error) {
       handleError(error);
